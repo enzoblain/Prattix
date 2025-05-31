@@ -1,0 +1,30 @@
+# Compiled files
+/target/
+
+# Executables and binaries
+**/*.exe
+**/*.dll
+**/*.so
+**/*.dylib
+
+# Backup and temporary files
+**/*~
+**/#*
+**/.#*
+**/*.swp
+**/*.swo
+
+# Cargo related
+Cargo.lock
+
+# IDEs and editors
+/.idea/
+/.vscode/
+/*.code-workspace
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
