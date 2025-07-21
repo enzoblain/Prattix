@@ -1,10 +1,11 @@
+use prattix::calculator::evaluate;
 use prattix::lexer::tokenize;
 
-use std::io::{
+use std::{io::{
     stdin, 
     stdout, 
     Write
-};
+}};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut input = String::new();
@@ -14,10 +15,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     stdout().flush()?;
     stdin().read_line(&mut input)?;
 
-    // Then we convert the inpute to a vector of tokens
-    let vec = tokenize(input);
+    // Then we convert the input to a vector of tokens
+    let vec = tokenize(input.trim().to_string());
 
-    println!("Digits: {:?}", vec);
+    let result = evaluate(vec);
+
+    println!("Result: {}", result);
 
     Ok(())
 } 

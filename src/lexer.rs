@@ -8,22 +8,29 @@ use crate::token::{
 // Returns all the tokens in a string
 pub fn tokenize(s: String) -> Vec<Token> {
     let mut vec = Vec::new();
-    
+        
     // Iterate through each character in the string
     // and convert it to a token if it's a digit or an operator
     // If it's not a digit or an operator, we skip it
+    // We also check if 2 following charcters are not the same type
+    let mut value = 1; // Assuming that an operator is not 0 and the expression starts with a number
     for c in s.chars() {
         if let Some(token) = get_token(c) {
-            vec.push(token);
+            if value != token.value {
+                value = token.value;
+                vec.push(token);
+            } else {
+                println!("Excluding token: {:?}", token.item);
+            }
+        } else {
+            println!("Skipping unrecognized character: {}", c);
         }
     }
 
-    // Finally, we add an end token to the vector
-    vec.push(Token {
-        item: Item::EndToken,
-        value: -1,
-
-    });
+    // If the last token is an operator, we remove it
+    if value != 0 && !vec.is_empty() {
+        vec.pop();
+    }
 
     vec
 }

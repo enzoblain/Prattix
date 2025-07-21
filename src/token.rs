@@ -1,7 +1,7 @@
 // We store each token as Number or and Operator
 // We just add an EndToken at the end of the vector
 // to indicate the end of the input
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Item {
     Number(Number),
     Operator(Operator),
@@ -10,14 +10,14 @@ pub enum Item {
 
 // A token is defined by it's type (either a Number or an Operator)
 // and a value that indicates its importance in the expression
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Token {
     pub item: Item,
     pub value: i32,
 }
 
 // The Number enum represents digits from 0 to 9
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Number {
     Zero,
     One,
@@ -47,6 +47,21 @@ impl Number {
             8 => Some(Number::Eight),
             9 => Some(Number::Nine),
             _ => None,
+        }
+    }
+
+    pub fn get_value(number: Number) -> u32 {
+        match number {
+            Number::Zero => 0,
+            Number::One => 1,
+            Number::Two => 2,
+            Number::Three => 3,
+            Number::Four => 4,
+            Number::Five => 5,
+            Number::Six => 6,
+            Number::Seven => 7,
+            Number::Eight => 8,
+            Number::Nine => 9,
         }
     }
 }
