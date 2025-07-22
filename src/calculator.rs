@@ -1,21 +1,38 @@
-use crate::{Item, Number, Operator, Token};
+use crate::{Item, Operator, Token};
 
-pub fn evaluate(mut expression: Vec<Token>) -> u32 {
+pub fn evaluate(mut expression: Vec<Token>) -> f64 {
+    // We loop until we have only one token left in the expression
+    // This token will be the result of the expression
     while expression.len() > 1 {
+        // This stores the place of the operator with the highest precedence
+        // and the value of that operator
         let mut place = 0;
         let mut value = expression[1].value;
 
+        // We start with the first operator and the first two numbers as default
         let mut first_number = expression[0].item.clone();
         let mut operator = expression[1].item.clone();
         let mut second_number = expression[2].item.clone();
 
+        // We iterate through the expression to find the operator with the highest precedence
+        // We start from the third token because the first two are already set
         for i in 3..expression.len() {
             let item = &expression[i];
 
+            // We skip the numbers
             if item.value == 0 {
                 continue;
             }
 
+            if value == 2 {
+                // If we already have an operator with the highest precedence,
+                // we break the loop to avoid unnecessary checks
+                break;
+            }
+
+            // If the current operator has a higher precedence than the previous one,
+            // we update the place and value
+            // We also update the numbers and the operator
             if item.value > value {
                 place = i - 1;
                 value = item.value;
@@ -25,47 +42,38 @@ pub fn evaluate(mut expression: Vec<Token>) -> u32 {
             }
         }
 
+        // Then we calculate the result of the operation
         let ans = calculate(first_number, operator, second_number);
-        let ans = match ans {
-            0 => Item::Number(Number::Zero),
-            1 => Item::Number(Number::One),
-            2 => Item::Number(Number::Two),
-            3 => Item::Number(Number::Three),
-            4 => Item::Number(Number::Four),
-            5 => Item::Number(Number::Five),
-            6 => Item::Number(Number::Six),
-            7 => Item::Number(Number::Seven),
-            8 => Item::Number(Number::Eight),
-            9 => Item::Number(Number::Nine),
-            _ => Item::Number(Number::Zero), // Default case for unexpected values
-        };
 
+        // And we replace the operator and the numbers with result
         expression[place] = Token {
-            item: ans,
+            item: Item::Number(ans),
             value: 0,
         };
-
         expression.remove(place + 1);
         expression.remove(place + 1);
     }
 
-    let ans = match &expression[0].item {
-        Item::Number(num) => Number::get_value(num.to_owned()),
-        _ => 0,
-    };
-
-    ans
+    // Finally, we return the result of the expression
+    // The result is the only token left in the expression
+    match expression[0].item {
+        Item::Number(num) => num,
+        _ => 0.0,
+    }
 }
 
-pub fn calculate(first_number: Item, operator: Item, second_number: Item) -> u32 {
+// This function calculates the result of an operation
+pub fn calculate(first_number: Item, operator: Item, second_number: Item) -> f64 {
+    // We match the operator and perform the corresponding operation
+
     let first_value = match first_number {
-        Item::Number(num) => Number::get_value(num),
-        _ => 0,
+        Item::Number(num) => num,
+        _ => 0.0,
     };
 
     let second_value = match second_number {
-        Item::Number(num) => Number::get_value(num),
-        _ => 0,
+        Item::Number(num) => num,
+        _ => 0.0,
     };
 
     match operator {
@@ -75,6 +83,6 @@ pub fn calculate(first_number: Item, operator: Item, second_number: Item) -> u32
             Operator::Multiply => first_value * second_value,
             Operator::Divide => first_value / second_value,
         },
-        _ => 0,
+        _ => 0.0,
     }
 }

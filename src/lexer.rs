@@ -1,6 +1,5 @@
 use crate::token::{
-    Item, 
-    Number, 
+    Item,  
     Operator, 
     Token
 };
@@ -37,22 +36,21 @@ pub fn tokenize(s: String) -> Vec<Token> {
 
 // Return a token if the character is a digit or an operator
 pub fn get_token(c: char) -> Option<Token> {
-    if let Some(digit) = Number::from_digit(c.to_digit(10).unwrap_or(10)) {
-        Some(
-            Token {
-                item: Item::Number(digit),
-                value: 0,
-            }
-        )
+    if c.is_ascii_digit() {
+        // If the character is a digit, we return a Number token
+        Some(Token {
+            item: Item::Number(c.to_digit(10).unwrap() as f64),
+            value: 0, // Assuming all numbers have the same precedence
+        })
     } else if let Some(op) = Operator::from_char(c) {
         Some(Token {
             item: Item::Operator(op.clone()),
             // Set operator precedence based on the operator type
             value: match op {
-                Operator::Add => 2,
-                Operator::Subtract => 2,
-                Operator::Multiply => 3,
-                Operator::Divide => 3,
+                Operator::Add => 1,
+                Operator::Subtract => 1,
+                Operator::Multiply => 2,
+                Operator::Divide => 2,
             },
         })
     } else {
