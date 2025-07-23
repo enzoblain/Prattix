@@ -5,7 +5,6 @@
 pub enum Item {
     Number(f64),
     Operator(Operator),
-    EndToken,
 }
 
 // A token is defined by it's type (either a Number or an Operator)
@@ -25,9 +24,9 @@ pub enum Operator {
     Divide,
 }
 
-// This function serves us to know if it's an operator
-// and to convert it to the corresponding Operator enum variant
 impl Operator {
+    // This function serves us to know if it's an operator
+    // and to convert it to the corresponding Operator enum variant
     pub fn from_char(c: char) -> Option<Operator> {
         match c {
             '+' => Some(Operator::Add),
@@ -35,6 +34,19 @@ impl Operator {
             '*' => Some(Operator::Multiply),
             '/' => Some(Operator::Divide),
             _ => None,
+        }
+    }
+
+    // Converts an Operator enum variant to a Token
+    pub fn get_token(op: Operator) -> Token {
+        Token {
+            item: Item::Operator(op.clone()),
+            value: match op {
+                Operator::Add => 1,
+                Operator::Subtract => 1,
+                Operator::Multiply => 2,
+                Operator::Divide => 2,
+            },
         }
     }
 }
