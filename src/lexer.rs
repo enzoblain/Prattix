@@ -7,6 +7,7 @@ use crate::token::{
 pub fn tokenize(s: String) -> Vec<Token> {
     let mut vec = Vec::new();
     let mut num = None;
+    let mut floating = false;
 
     for n in s.chars() {
         // If the character is a digit, we append it to the current number
@@ -16,6 +17,18 @@ pub fn tokenize(s: String) -> Vec<Token> {
             } else {
                 num = Some(n.to_string());
             }
+        } else if n == '.' {
+            // If the character is a dot, we check if we already have a floating point number
+            if floating {
+                continue; // Skip if we already have a dot
+            } else if let Some(ref mut number) = num {
+                *number = format!("{}{}", number, n);
+                floating = true; // Set floating to true after adding the dot
+            } else {
+                num = Some(n.to_string());
+                floating = true; // Start a new floating point number
+
+        }
         } else if let Some(op) = Operator::from_char(n) {
             // If the character is an operator, we first check if we have a number to add
             // If we do, we add it to the vector
@@ -28,7 +41,7 @@ pub fn tokenize(s: String) -> Vec<Token> {
 
             // Then we add the operator to the vector
             vec.push(Operator::get_token(op));
-            
+
         // We skip non-digit and non-operator characters
         } else if !n.is_whitespace() {
             println!("Skipping unrecognized character: {}", n);

@@ -6,19 +6,23 @@ This project serves as a practical exercise to deepen my understanding of parsin
 ## 🚧 Current Status
 
 > 🛠️ Core tokenizer implemented for basic arithmetic expressions.  
-> 🧮 Expression evaluation in progress.
+> 🧮 Expression evaluation fully functional
 
 ## 🎯 Goals
 
-### ✅ Core Parsing *(ongoing)*
+### ✅ Core Parsing *(complete)*
 - Tokenization of input into numbers and operators 🔢  
 - Parsing expressions with correct operator precedence 🧩  
-- Evaluating the resulting expression tree 🌳  
 
-### 🛠️ Improvements *(planned)*
+### 🛠️ Improvements *(ongoing)*
 - Support for parentheses and unary operators 🧬  
 - Building a full abstract syntax tree (AST) 🏗️  
 - Better error handling and reporting 🧯  
+
+### 🧠 Live Parsing & Detection *(planned)*
+- Real-time detection of numbers and operators 🔍
+- Direct expression input and parsing ✍
+- Immediate feedback on parsing results ⚡
 
 ## 🧰 Tech Stack
 
